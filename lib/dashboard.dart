@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:icici_challenge/bottom_sheet_icon_model.dart';
 import 'package:icici_challenge/card_model.dart';
 import 'package:icici_challenge/custom/currencyFormat.dart';
-class IciciChallenge extends StatefulWidget {
+class Dashboard extends StatefulWidget {
   @override
-  _IciciChallengeState createState() => _IciciChallengeState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _IciciChallengeState extends State<IciciChallenge> {
+class _DashboardState extends State<Dashboard> {
   List<CardModel> cards;
   List a = new List(3);
   List<BottomSheetIconModel> bottomSheetIconModels = new List();

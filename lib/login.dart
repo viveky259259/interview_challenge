@@ -1,199 +1,202 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:icici_challenge/validators/validators.dart';
 
-void main() => runApp(LoginApp());
-
-class LoginApp extends StatelessWidget {
+class CreativeLogin extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login Challenge',
-      theme: ThemeData(
-          primarySwatch: Colors.deepPurple
-      ),
-      home: LoginPage(),
-    );
-  }
+  _CreativeLoginState createState() => _CreativeLoginState();
 }
 
-class LoginPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _LoginPageState();
-  }
-}
+class _CreativeLoginState extends State<CreativeLogin> {
+  Color voilet = Color.fromARGB(0xFF, 0x51, 0x56, 0xce);
+  Color voiletDark = Color.fromARGB(0xFF, 0x2b, 0x32, 0x82);
+  FocusNode textEmailFocusNode = new FocusNode();
+  FocusNode textPasswordFocusNode = new FocusNode();
+  final passwordTextController = TextEditingController();
+  final emailTextController = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-class _LoginPageState extends State<LoginPage> {
-
-  // f45d27
-  // f5851f
-
-  @override
-  void initState() {
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    super.initState();
+  doLogin(context, String email, String password) {
+    String emailVal = Validator.validateEmail(email);
+    String passwordVal = Validator.validatePassword(password);
+    if (emailVal != null) {
+      final snackBar = SnackBar(content: Text(emailVal));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+      return;
+    }
+    if (passwordVal != null) {
+      final snackBar = SnackBar(content: Text(passwordVal));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+      return;
+    }
+    Navigator.pushReplacementNamed(context, "/dashboard");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/2.5,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFFf45d27),
-                      Color(0xFFf5851f)
-                    ],
-                  ),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(90)
-                  )
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 24,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Spacer(),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Icon(Icons.person,
-                      size: 90,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Spacer(),
-
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 32,
-                          right: 32
-                      ),
-                      child: Text('Login',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              Image.asset(
+                "images/feature.png",
+                height: 256,
+                width: 256,
+                color: voiletDark,
               ),
-            ),
-
-            Container(
-              height: MediaQuery.of(context).size.height/2,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 62),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
+              SizedBox(
+                height: 48,
+              ),
+              Text(
+                "Login",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: voiletDark,
+                    letterSpacing: 1),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                    color: voilet, borderRadius: BorderRadius.circular(75)),
+                margin: EdgeInsets.all(16),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        controller: emailTextController,
+                        style: TextStyle(color: Colors.white, letterSpacing: 1),
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Email',
+                            hintStyle: TextStyle(
+                                color: Colors.white54, letterSpacing: 1)),
+                        validator: Validator.validateEmail,
+                        focusNode: textEmailFocusNode,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context)
+                              .requestFocus(textPasswordFocusNode);
+                        },
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                    new Container(
+                      width: 48.0,
+                      height: 48.0,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.circle, color: voiletDark),
+                      child: Icon(
+                        Icons.person,
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(Icons.email,
-                          color: Colors.grey,
-                        ),
-                        hintText: 'Email',
                       ),
                     ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    margin: EdgeInsets.only(top: 32),
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                    color: voilet, borderRadius: BorderRadius.circular(75)),
+                margin: EdgeInsets.all(16),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: passwordTextController,
+                        focusNode: textPasswordFocusNode,
+                        style: TextStyle(color: Colors.white, letterSpacing: 1),
+                        textAlign: TextAlign.center,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Password',
+                            hintStyle: TextStyle(
+                                color: Colors.white54, letterSpacing: 1)),
+                        validator: Validator.validatePassword,
+                        textInputAction: TextInputAction.done,
+                        onEditingComplete: () {
+                          doLogin(context, emailTextController.text,
+                              passwordTextController.text);
+                        },
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                    new Container(
+                      width: 48.0,
+                      height: 48.0,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.circle, color: voiletDark),
+                      child: Icon(
+                        Icons.vpn_key,
                         color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(Icons.vpn_key,
-                          color: Colors.grey,
-                        ),
-                        hintText: 'Password',
                       ),
                     ),
-                  ),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 16, right: 32
-                      ),
-                      child: Text('Forgot Password ?',
-                        style: TextStyle(
-                            color: Colors.grey
-                        ),
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-
-                  Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width/1.2,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFf45d27),
-                            Color(0xFFf5851f)
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 48),
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  "Forgot Password",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: voiletDark,
+                      letterSpacing: 1),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                    color: voilet, borderRadius: BorderRadius.circular(75)),
+                margin: EdgeInsets.all(16),
+                child: InkWell(
+                  onTap: () {
+                    doLogin(context, emailTextController.text,
+                        passwordTextController.text);
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Center(
+                              child: Text("Login",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                      letterSpacing: 1)),
+                            )
                           ],
                         ),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        )
-                    ),
-                    child: Center(
-                      child: Text('Login'.toUpperCase(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold
+                      ),
+                      new Container(
+                        width: 48.0,
+                        height: 48.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle, color: voiletDark),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

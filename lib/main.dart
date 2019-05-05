@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icici_challenge/icici_challenge.dart';
+import 'package:icici_challenge/dashboard.dart';
 import 'package:icici_challenge/login.dart';
 
 void main() => runApp(MyApp());
@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LoginApp(),
+      routes: {"/dashboard": (c) => Dashboard()},
+      home: CreativeLogin(),
     );
   }
 }
